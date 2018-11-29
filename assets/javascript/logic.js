@@ -9,6 +9,7 @@ function renderButtons() {
         btn.attr("data-topic", topics[i]);
         $('#btn-container').append(btn);
     };
+
     $('#btn-container').on("click", ".btn-topic", getGifImages);
 };
 
@@ -26,20 +27,22 @@ function pauseAndAnimateGif() {
 function generateGifDivs(response) {
     $("#results").empty()
     var results = response.data;
+    console.log(response);
     for (let i = 0; i < results.length; i++) {
         var imageDiv = $("<div>");
         var rating = results[i].rating;
         var pOne = $("<p>").text("Rating: " + rating).css('color', 'red');
         var image = $("<img>");
-        image.attr("src", results[i].images.fixed_width_still.url);
+        image.attr("src", results[i].images.original_still.url);
         imageDiv.append(image);
         $("#results").append(imageDiv, pOne);
-        image.attr("data-still", results[i].images.fixed_width_still.url);
-        image.attr("data-animate", results[i].images.fixed_width.url);
+        image.attr("data-still", results[i].images.original_still.url);
+        image.attr("data-animate", results[i].images.original.url);
         image.attr("data-state", 'still');
         image.addClass('gifs');
     };
     $(".gifs").on("click", pauseAndAnimateGif);
+
 };
 
 function callGifyApi(gifyURL) {
@@ -75,6 +78,6 @@ function handleSubmit(event) {
     validateForm(newTopic);
 };
 
-$(".submit").on("click", handleSubmit);
+$(".form").on("submit", handleSubmit);
 
 renderButtons();
